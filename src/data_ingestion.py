@@ -86,8 +86,9 @@ def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str)
 
 def main():
     try:
-        # test_size = params['data_ingestion']['test_size']
-        test_size = 0.2
+        params=load_params("params.yaml")
+        test_size = params['data_ingestion']['test_size']
+        # test_size = 0.2
         # data_path = 'https://raw.githubusercontent.com/vikashishere/Datasets/main/spam.csv'
         data_path= r'experiment\spam.csv'
         df = load_data(data_url=data_path)
