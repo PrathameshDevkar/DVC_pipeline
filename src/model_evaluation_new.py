@@ -124,9 +124,18 @@ def main():
         print(type(y_test))
         metrics = evaluate_model(clf, X_test, y_test)
   
-        with Live(save_dvc_exp=True) as live:
-            live.log_metric('accuracy', accuracy_score(y_test,y_test))
+        # with Live(save_dvc_exp=True) as live:
+        #     live.log_metric('accuracy', accuracy_score(y_test,y_test))
+        #     live.log_params(params)
+        
+        with Live(dir="dvclive", report=None) as live:
+            # Log actual parameters from params.yaml
             live.log_params(params)
+
+            # Log metrics correctly
+            for key, value in metrics.items():
+                live.log_metric(key,value)
+            live.next_step()
             
         save_metrics(metrics, 'reports/metrics.json')
     except Exception as e:
