@@ -115,7 +115,7 @@ def save_metrics(metrics: dict, file_path: str) -> None:
 def main():
     try:
 
-        # params = load_params("params.yaml")
+        params = load_params("params.yaml")
         clf = load_model('./models/model_new.pkl')
         test_data = load_data('./data/processed/test_tfidf.csv')
         
@@ -124,6 +124,10 @@ def main():
         print(type(y_test))
         metrics = evaluate_model(clf, X_test, y_test)
   
+        with Live(save_dvc_exp=True) as live:
+            live.log_metric('accuracy', accuracy_score(y_test,y_test))
+            live.log_params(params)
+            
         save_metrics(metrics, 'reports/metrics.json')
     except Exception as e:
         logger.error('Failed to complete the model evaluation process: %s', e)
